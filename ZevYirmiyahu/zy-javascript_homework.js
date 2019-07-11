@@ -2,7 +2,6 @@ var homework = {};
 //module.exports = homework;
 
 
-
 /*
   1. Return the nth fibonacci number
   f(0) = 0
@@ -104,14 +103,18 @@ homework.rotateLeft = function(array, n) {
 */
 
 homework.balancedBrackets = function(bracketsString){
-    if(bracketsString % 2 != 0) return false; // odd number of chars, never balanced
+    if(bracketsString.length % 2 != 0) return false; // odd number of chars, never balanced
     let length = bracketsString.length;
     let firstHalf = bracketsString.substring(0, length / 2);
     let lastHalf = bracketsString.substring(length / 2, length);
     for(let i = 0; i < length / 2; i++) {
-        console.log(lastHalf);
-        if(!firstHalf.charAt(i) == lastHalf.charAt(length - i - 1)) return false;
+        let firstChar = firstHalf.charAt(i);
+        let lastChar = lastHalf.charAt(length / 2 - i - 1);
+        if(firstChar == "(" && lastChar == ")") continue;
+        else if(firstChar == "{" && lastChar == "}") continue;
+        else if(firstChar == "[" && lastChar == "]") continue;
+        else return false;
     }
-    return true; 
+    return true; // cases passed then brackets balanced
 };
 
