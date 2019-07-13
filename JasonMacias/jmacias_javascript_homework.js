@@ -91,12 +91,13 @@ homework.factorial = function(n){
   f([1,2,3,4,5], 3) = [4,5,1,2,3]
 
 */
-// NOT WORKING - accidentally wrote to rotate right, need to reverse
+// Fixed, now going the right direction
 homework.rotateLeft = function(array, n) {
   const array2 = array.map(function(x, i) {
-    let shiftIndex = i - n;
-    if (shiftIndex < 0) {
-      shiftIndex += array.length;
+    let shiftIndex = i + n;
+    while (shiftIndex > array.length - 1) {
+      shiftIndex = shiftIndex - array.length;
+      // shiftIndex += array.length;
     }
     let y = array[shiftIndex];
     
