@@ -91,12 +91,13 @@ homework.factorial = function(n){
   f([1,2,3,4,5], 3) = [4,5,1,2,3]
 
 */
-// NOT WORKING - accidentally wrote to rotate right, need to reverse
+// Fixed, now going the right direction
 homework.rotateLeft = function(array, n) {
   const array2 = array.map(function(x, i) {
-    let shiftIndex = i - n;
-    if (shiftIndex < 0) {
-      shiftIndex += array.length;
+    let shiftIndex = i + n;
+    while (shiftIndex > array.length - 1) {
+      shiftIndex = shiftIndex - array.length;
+      // shiftIndex += array.length;
     }
     let y = array[shiftIndex];
     
@@ -126,6 +127,91 @@ homework.rotateLeft = function(array, n) {
   Return true if balanced
   Return false if not balanced
 */
-homework.balancedBrackets = function(bracketsString){
 
+// this isn't fully working yet, need to continue at line 151
+homework.balancedBrackets = function(bracketsString){
+  let isBalanced = false;
+  const strArr = bracketsString.split("");
+  let checkedIndex = -1; // external variable to keep track of closing bracket index
+
+  function interiorLoop(char, index) {
+  // interior loop for switch case in loop below to check nested brackets
+    let bracketCloses = false;
+    let checkedToIndex = -1;
+    for (let i = index + 1 ; i < strArr.length; i++) {
+      if (char === strArr[i]) {
+        checkedToIndex = i;
+        if ((i - index) % 2 === 0) { // if space between brackets is odd (index - i is even), then the enclosed brackets cannot be paired off and must be imbalanced
+        
+        bracketCloses = false;
+        }
+        else {
+          const subArr = strArr.slice(index +1 , i);
+          console.log(subArr);
+          bracketCloses = true; // for now, listing maybes as true
+          // need to think of a way to check this subarray (probably recursive, but I haven't gotten that to work yet.  May have to write another switch case here
+          break;
+        }
+      }
+      
+    }
+    console.log(checkedToIndex);
+    return {
+      checkedToIndex, 
+      bracketCloses // boolean
+    };
+  } 
+
+  function exteriorLoop(strArr) {
+    for (let i = 0; i < strArr.length; i++) {
+      // if the interior loop has already checked an index, skip it
+      if (i <= checkedIndex) {
+        
+        continue;
+      }
+      console.log(i);
+      
+      let unBalanced = false;
+      const char = strArr[i];
+      switch (char) {
+        case "[":
+          loopResultArr = interiorLoop("]", i);
+          checkedIndex = loopResultArr.checkedToIndex;
+          isBalanced = loopResultArr.bracketCloses;
+          unBalanced = !loopResultArr.bracketCloses;
+          break;
+        case "]":
+          unbalanced = true;
+          break;
+        case "{":
+          loopResultArr = interiorLoop("}", i);
+          checkedIndex = loopResultArr.checkedToIndex;
+          isBalanced = loopResultArr.bracketCloses;
+          unBalanced = !loopResultArr.bracketCloses;
+          console.log(checkedIndex);
+          break;
+        case "}":
+          unbalanced = true;
+          break;
+        case "(":
+          loopResultArr = interiorLoop(")", i);
+          console.log(loopResultArr);
+          checkedIndex = loopResultArr.checkedToIndex;
+          isBalanced = loopResultArr.bracketCloses;
+          unBalanced = !loopResultArr.bracketCloses;
+          break;
+        case ")":
+          unbalanced = true;
+          break;
+        default:
+          console.log("Please enter only brackets in your string.");
+      }
+      if (unBalanced) {
+        break;
+      } 
+      
+    }
+  }  
+  exteriorLoop(strArr);
+  return isBalanced;
 };
