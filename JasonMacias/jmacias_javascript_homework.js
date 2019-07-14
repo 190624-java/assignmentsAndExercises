@@ -140,22 +140,35 @@ homework.balancedBrackets = function(bracketsString){
     let checkedToIndex = -1;
     for (let i = index + 1 ; i < strArr.length; i++) {
       if (char === strArr[i]) {
-        checkedToIndex = i;
+        checkedToIndex = i > checkedToIndex ? i : checkedToIndex;
         if ((i - index) % 2 === 0) { // if space between brackets is odd (index - i is even), then the enclosed brackets cannot be paired off and must be imbalanced
         
         bracketCloses = false;
         }
         else {
+          // quick arrow function to return a closing bracket based on opening one (format: if [, ], else if {, }, else )
+          const closeBracket = bracket => bracket === "[" ? "]" : bracket === "{" ? "}" : ")";
+          
           const subArr = strArr.slice(index +1 , i);
-          console.log(subArr);
-          bracketCloses = true; // for now, listing maybes as true
+          if (subArr.length === 2 && closeBracket(subArr[0]) === subArr[1]) {
+            bracketCloses = true;
+          }
+          else if (subArr.length === 0) {
+            bracketCloses = true;
+          }
+          else if (subArr.length === 1) {
+            bracketCloses = false;
+          }
+          else {
+            // logic for recursive function
+          }
+          
+          // for now, listing maybes as true
           // need to think of a way to check this subarray (probably recursive, but I haven't gotten that to work yet.  May have to write another switch case here
           break;
         }
-      }
-      
+      } 
     }
-    console.log(checkedToIndex);
     return {
       checkedToIndex, 
       bracketCloses // boolean
