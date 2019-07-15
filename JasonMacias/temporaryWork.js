@@ -17,9 +17,11 @@ balancedBrackets = function(bracketsString){
     return endIndex;
     // index where bracket closes, or -1 if no closure
   }
+
   function breakStringArr(arr) {
     // function to break a string up into substrings by opening/closing brackets
-    let breakpoints = [];
+    const breakpoints = [];
+    const arrays = [];
     for (let i = 0; i < strArr.length; i++) {
       // if an index has been checked, skip it
       if (i <= checkedIndex) {
@@ -29,8 +31,42 @@ balancedBrackets = function(bracketsString){
       breakpoints.push(resIndex);
       checkedIndex = resIndex;
     }
-    
+    if (checkedIndex === -1) {
+      // no closing brackets
+      return false;
+    }
+    let breakPointCounter = 0;
+    for (let x of breakpoints) {
+      const subArr = arr.slice(breakPointCounter, x + 1);
+      breakPointCounter = x + 1;
+      arrays.push(subArr);
+    }
+    // last unsliced section
+    arrays.push(arr.slice(breakPointCounter));
+    // returning array of sub-arrays
+    return arrays;
   }
+
+  function reduceBrokenString(arr) {
+    // function to recursively remove opening/closing first and last characters of an array until firs/last no longer match.  Returns false if this subarr proves string is unbalanced, true if this array was ok (all nested open/close brackets), and the subarray if it cannot be reduced (i.e., needs to be broken down).
+    if (arr.length > 1 && ) {
+    arr.pop();
+    arr.shift();
+    }
+    else if (arr.length === 1) {
+
+      return false;
+    }
+    else if (arr.length < 1) {
+      // array consisted entirely of nested brackets, this one is good
+      return true;
+    }
+    return arr;
+
+  }
+
+
+
   return isBalanced;
 };
 
