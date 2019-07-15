@@ -3,7 +3,6 @@ module.exports = homework;
 
 /*
   1. Return the nth fibonacci number
-
   f(0) = 0
   f(1) = 1
   f(10) = 55
@@ -13,7 +12,7 @@ homework.fibonacci = function(n){
   //Method 1 - large complexity, but short code
   if(n==0) return 0;
   else if(n==1) return 1;
-  return doFib(n-2) + doFib(n-1);
+  return fibonacci(n-2) + fibonacci(n-1);
 
 };
 
@@ -27,6 +26,7 @@ homework.fibonacci = function(n){
  * store the results in the array.
  * The result = array(current-2) + array(current-1)
  */
+/*
 var fibonacciResults = [];
 function doFibonacci(previousResult, currentN, max) {
   if(currentN==max) return fibonacciResults[max-1];  
@@ -38,6 +38,7 @@ function doFibonacci(previousResult, currentN, max) {
   fibonacciResults[currentN] = fibonacciResults[currentN-2] + fibonacciResults[currentN-1];
   return doFibonacci(currentN+1, max);
 }
+*/
 
 //method 3
 //passing in previousPrevious and previous to a function
@@ -49,9 +50,7 @@ function doFibonacci(previousResult, currentN, max) {
 
 /*
   2. Sort array of integers
-
   f([2,4,5,1,3,1]) = [1,1,2,3,4,5]
-
   Don't use the Array sort() method... that would be lame.
 */
 homework.sort = function(array) {
@@ -82,7 +81,6 @@ homework.sort = function(array) {
 
 /*
   3. Return the factorial of n
-
   f(0) = 1
   f(1) = 1
   f(3) = 6
@@ -97,13 +95,10 @@ homework.factorial = function(n){
 
 /*
   4. Rotate left
-
   Given array, rotate left n times and return array
-
   f([1,2,3,4,5], 1) = [2,3,4,5,1]
   f([1,2,3,4,5], 6) = [2,3,4,5,1]
   f([1,2,3,4,5], 3) = [4,5,1,2,3]
-
 */
 homework.rotateLeft = function(array, n) {
   if(n==0) return;
@@ -125,34 +120,48 @@ homework.rotateLeft = function(array, n) {
 
 /*
   Bonus: Balanced Brackets
-
   A bracket is any one of the following: (, ), {, }, [, or ]
-
   The following are balanced brackets:
     ()
     ()()
     (())
     ({[]})
-
   The following are NOT balanced brackets:
   (
   )
   (()
   ([)]
-
   Return true if balanced
   Return false if not balanced
 */
 homework.balancedBrackets = function(bracketsString){
   //for each character in the string
   let chars = bracketsString.length
+  let bStack = [];
+  let bStackI = -1;
   for(i=0; i<chars; i++){
     //if one of the opening symbols cases, store it on the stack
-    if(bracketsString[i] )
+    if(chars[i] == '(' || chars[i] == '[' ) {
+      bStackI++;
+      bStack[bStackI] = chars[i];
+      
+    }
     //if one of the closing symbols cases, 
     // if there is a corresponding open bracket on the stack, pop it off
     // else return false
-  }
+    else if(chars[i] == ')')
+      if(bStackI<0 || bStack[bStackI]!='(') return false;
+      else {
+        bStackI--; //pop from stack
+      }
+    else if(chars[i] == '}')
+      if(bStackI<0 || bStack[bStackI]!='{') return false;
+      else {
+        bStackI--;
+      }
+  }//end for
   //if last character was proccessed, and there is an empty stack, 
   // return true
+  if(bStack==-1) return true;
+  else return false;
 };
